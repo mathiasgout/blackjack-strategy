@@ -12,12 +12,10 @@ class PlayBlackJack:
         
         print("-------------------- Setup Game --------------------")
         self.setup()
-    
-        print("-------------------- Game Starts --------------------")
         
         
     def setup(self):
-        """ Setup the game """
+        """ Setup the game and deals the first cards """
         
         # Players number
         players_number = input("How many players ? (max 3) : ")
@@ -44,10 +42,22 @@ class PlayBlackJack:
         self.players = players
         self.dealer = dict()
         
+        # Announcement
+        print("-------------------- Game Starts --------------------")
+        print("Players : {} and {}.".format(", ".join(self.players_name[:-1]), self.players_name[-1]))
         
+        # First cards dealt
+        for player in players_name:
+            self.players[player]["cards"] = self.cards[:2]
+            self.cards = self.cards[2:]
+        
+        self.dealer["cards"] = self.cards[:1]
+        self.hidden_card = self.cards[1]
+        self.cards = self.cards[2:]
+    
+    
     
 
 
 if __name__ == "__main__":
     game = PlayBlackJack()
-    game
