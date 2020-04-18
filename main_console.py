@@ -112,7 +112,7 @@ class PlayBlackJack:
     def game_starts(self):
         """ The beginning of the game """
          
-        print("-------------------- Game Starts --------------------")
+        print("\n-------------------- Game Starts --------------------")
         
         # cards initialization
         signs = [" of Club", " of Spade", " of Heart", " of Diamond"]
@@ -143,6 +143,7 @@ class PlayBlackJack:
         self.dealer["points"] = 0
         self.dealer["BJ"] = False
         
+        print("\n")
         self.main()
             
         
@@ -154,6 +155,7 @@ class PlayBlackJack:
             
             self.players[player]["points"] = self.points_calculation(self.players[player])
             self.print_hand(self.dealer)
+            print("\n")
             self.print_hand(self.players[player])
             
             # Insurance
@@ -180,7 +182,9 @@ class PlayBlackJack:
                     continue
                 
                 while True:
+                    print("\n")
                     self.print_hand(self.dealer)
+                    print("\n")
                     self.print_hand(self.players[player])
                                         
                     # Ask for card
@@ -200,11 +204,13 @@ class PlayBlackJack:
                             self.print_hand(self.players[player])
                             print("{} lost.".format(player))
                             break
+            print("\n")
                         
         # Dealer turn
         self.dealer["cards"].append(self.hidden_card)
         self.dealer["points"] = self.points_calculation(self.dealer)
         print("Dealer turn his card !")
+        print("\n")
         self.print_hand(self.dealer)
         
         if self.dealer["points"] == 21:
@@ -218,6 +224,7 @@ class PlayBlackJack:
                 self.print_hand(self.dealer)
             print("Dealer has {} points, end of the game !".format(self.dealer["points"]))
         
+        print("\n")
         print("-------------------- End of the Game --------------------")
         self.give_results()
         self.ask_for_new_game()
@@ -341,6 +348,7 @@ class PlayBlackJack:
     def give_results(self):
         """ List the results """
         
+        print("\n")
         print("-------------------- Results --------------------")
         
         for player in self.players_name:
@@ -446,15 +454,15 @@ class PlayBlackJack:
 
 if __name__ == "__main__":
     game = PlayBlackJack()
-    game.players["_1"]["cards"] = ["T","J"]
-    game.players["_1"]["cards_1"] = []
-    game.players["_1"]["cards_2"] = []
-    game.players["_1"]["points_1"] = 0
-    game.players["_1"]["points_2"] = 0    
-    game.players["_1"]["money"] = 0
-    game.players["_2"]["cards"] = ["8","9"]
-    game.players["_2"]["money"] = 0
-    game.dealer["cards"] = ["9"]
-    game.dealer["points"] = 9
+    # game.players["_1"]["cards"] = ["T","J"]
+    # game.players["_1"]["cards_1"] = []
+    # game.players["_1"]["cards_2"] = []
+    # game.players["_1"]["points_1"] = 0
+    # game.players["_1"]["points_2"] = 0    
+    # game.players["_1"]["money"] = 0
+    # game.players["_2"]["cards"] = ["8","9"]
+    # game.players["_2"]["money"] = 0
+    # game.dealer["cards"] = ["9"]
+    # game.dealer["points"] = 9
     
     
