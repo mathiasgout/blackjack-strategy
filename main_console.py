@@ -108,6 +108,8 @@ class PlayBlackJack:
             self.players[player]["insurance"] = False
             self.players[player]["double"] = False
             self.players[player]["split"] = False
+            self.players[player]["cards_1"] = []
+            self.players[player]["cards_2"] = []
         
         self.dealer["cards"] = []
         self.dealer["cards"] = [self.cards.pop(0)]
@@ -135,6 +137,10 @@ class PlayBlackJack:
                     want_insurance = input("Please {}, do you want an insurance ? (y/n) : ".format(player))
                 if want_insurance == "y":
                     self.players[player]["insurance"] = True
+                    
+            # Split case
+            if self.ask_for_split(player) is True:
+                continue
                 
             # Blackjack case
             if self.players[player]["points"] == 21:
@@ -205,6 +211,13 @@ class PlayBlackJack:
             self.print_hand(self.players[player])
             return True
         return False
+    
+    
+    def ask_for_split(self, player):
+        """ The split case """
+        pass
+        
+        
         
     
     def give_results(self):
