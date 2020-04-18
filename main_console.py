@@ -133,14 +133,17 @@ class PlayBlackJack:
             
             # Other cases
             else:
+                
+                self.print_hand(self.dealer)
+                self.print_hand(self.players[player])
+                # double case
+                if self.ask_for_double(player) is True:
+                    continue
+                
                 while True:
                     self.print_hand(self.dealer)
                     self.print_hand(self.players[player])
-                    
-                    # double case
-                    self.ask_for_double(player)
-                    break
-                    
+                                        
                     # Ask for card
                     want_card = input("{} do you want a card ? (y/n) : ".format(player))
                     while want_card not in ["y","n"]:
@@ -193,6 +196,8 @@ class PlayBlackJack:
             self.players[player]["cards"].append(self.cards.pop(0))
             self.players[player]["points"] = self.points_calculation(self.players[player])
             self.print_hand(self.players[player])
+            return True
+        return False
         
     
     def give_results(self):
