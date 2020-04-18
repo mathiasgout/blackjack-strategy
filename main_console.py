@@ -44,6 +44,7 @@ class PlayBlackJack:
             players[name]["name"] = name
             players[name]["points"] = 0
             players[name]["money"] = 0
+            players[name]["BJ"] = False
             players[name]["insurance"] = False
             players[name]["double"] = False
         
@@ -52,6 +53,7 @@ class PlayBlackJack:
         self.dealer = dict()
         self.dealer["name"] = "Dealer"
         self.dealer["points"] = 0
+        self.dealer["BJ"] = False
             
     
     @staticmethod
@@ -107,26 +109,87 @@ class PlayBlackJack:
             self.players[player]["cards"] = self.cards[:2]
             self.cards = self.cards[2:]
 
-        self.dealer["cards"] = self.cards[:1]
-        self.hidden_card = self.cards[1]
-        self.cards = self.cards[2:] 
+        self.dealer["cards"] = [self.cards.pop(0)]
+        self.hidden_card = self.cards.pop(0)
         
             
     def main(self):
-        """ Game from the first player turn to the end """
+        """ Game from the start of first player turn to the end of the dealer turn """
         
         # Players turns
         for player in self.players_name:
             
+            self.players[player]["points"] = self.points_calculation(self.players[player])
             # Blackjack case
-            if self.points_calculation(self.players[player]) == 21:
+            if self.players[player]["points"] == 21:
                 self.print_hand(self.players[player])
+                self.players[player]["BJ"] = True
                 print("Blackjack for {} !".format(player))
             
             # Other cases
             else:
+                while True:
+                    self.print_hand(self.dealer)
+                    self.print_hand(self.players[player])
+                    
+                    # Ask for card
+                    want_card = input("{} do you want a card ? (y/n) : ".format(player))
+                    while want_card not in ["y","n"]:
+                        want_card = input("Please {}, do you want a card ? (y/n) : ".format(player))
+                    
+                    if want_card == "n":
+                        break
+                    else:
+                        self.players[player]["cards"].append(self.cards.pop(0))
+                        self.players[player]["points"] = self.points_calculation(self.players[player])
+                        if self.players[player]["points"] == 21:
+                            self.print_hand(self.players[player])
+                            break
+                        elif self.players[player]["points"] > 21:
+                            self.print_hand(self.players[player])
+                            print("{} lost.".format(player))
+                            break
+                        
+        # Dealer turn
+        self.dealer["cards"].append(self.hidden_card)
+        self.dealer["points"] = self.points_calculation(self.dealer)
+        print("Dealer turn his card !")
+        self.print_hand(self.dealer)
+        
+        if self.dealer["points"] == 21:
+            self.dealer["BJ"] = True
+            print("Blackjack from the dealer, end of the game !")
+        else:
+            while self.dealer["points"] < 17:
+                print("Dealer draw a card !")
+                self.dealer["cards"].append(self.cards.pop(0))
+                self.dealer["points"] = self.points_calculation(self.dealer)
                 self.print_hand(self.dealer)
-                self.print_hand(self.players[player])
+            print("Dealer has {} points, end of the game !".format(self.dealer["points"]))
+        
+        print("-------------------- End of the Game --------------------")
+            
+    
+    def give_results(self):
+        """ List the results """
+        
+        print("-------------------- Results --------------------")
+        
+        for player in self.players_name:
+            # BJ case
+            if self.players[player]["BJ"] == True:
+                if self.dealer["BJ"] == True:
+                    print("Draw for {}.".format(player))
+                else:
+                    print("{} wins.".format(player))
+                    
+            # Other cases        
+        else:
+            pass
+        
+        
+        
+                
             
         
 
