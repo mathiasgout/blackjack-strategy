@@ -125,17 +125,24 @@ class PlayBlackJack:
         for player in self.players_name:
             
             self.players[player]["points"] = self.points_calculation(self.players[player])
+            self.print_hand(self.dealer)
+            self.print_hand(self.players[player])
+            
+            # Insurance
+            if self.dealer["cards"][0][0] == "A":
+                want_insurance = input("Dealer's first card is an Ace, do you want an insurance {} ? (y/n) : ".format(player))
+                while want_insurance not in ["y","n"]:
+                    want_insurance = input("Please {}, do you want an insurance ? (y/n) : ".format(player))
+                if want_insurance == "y":
+                    self.players[player]["insurance"] = True
+                
             # Blackjack case
             if self.players[player]["points"] == 21:
-                self.print_hand(self.players[player])
                 self.players[player]["BJ"] = True
                 print("Blackjack for {} !".format(player))
             
             # Other cases
             else:
-                
-                self.print_hand(self.dealer)
-                self.print_hand(self.players[player])
                 # double case
                 if self.ask_for_double(player) is True:
                     continue
@@ -207,6 +214,13 @@ class PlayBlackJack:
         
         for player in self.players_name:
             
+            # Insurance case
+            if self.players[player]["insurance"] == True:
+                if self.dealer["BJ"] == True:
+                    self.players[player]["money"] = self.players[player]["money"] + 1.5
+                else:
+                    self.players[player]["money"] = self.players[player]["money"] - 0.5
+                    
             # Game bet
             if self.players[player]["double"] == True:
                 game_bet = 2
@@ -262,7 +276,6 @@ class PlayBlackJack:
             for player in self.players_name:
                 print("{} money : {}".format(player, self.players[player]["money"]))
                 
-        return
         
 
 if __name__ == "__main__":
