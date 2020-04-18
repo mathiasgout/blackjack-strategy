@@ -107,6 +107,7 @@ class PlayBlackJack:
             self.players[player]["BJ"] = False
             self.players[player]["insurance"] = False
             self.players[player]["double"] = False
+            self.players[player]["split"] = False
         
         self.dealer["cards"] = []
         self.dealer["cards"] = [self.cards.pop(0)]
