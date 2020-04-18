@@ -136,6 +136,10 @@ class PlayBlackJack:
                     self.print_hand(self.dealer)
                     self.print_hand(self.players[player])
                     
+                    # double case
+                    self.ask_for_double(player)
+                    break
+                    
                     # Ask for card
                     want_card = input("{} do you want a card ? (y/n) : ".format(player))
                     while want_card not in ["y","n"]:
@@ -175,6 +179,20 @@ class PlayBlackJack:
         self.give_results()
         self.ask_for_new_game()
         
+        
+    def ask_for_double(self, player):
+        """ The double case """
+        
+        question = input("{} do you want to double ? (y/n) : ".format(player))
+        while question not in ["y","n"]:
+            question = input("Please {}, do you want a card ? (y/n) : ".format(player))
+        
+        if question == "y":
+            self.players[player]["double"] = True
+            self.players[player]["cards"].append(self.cards.pop(0))
+            self.players[player]["points"] = self.points_calculation(self.players[player])
+            self.print_hand(self.players[player])
+        
     
     def give_results(self):
         """ List the results """
@@ -182,37 +200,44 @@ class PlayBlackJack:
         print("-------------------- Results --------------------")
         
         for player in self.players_name:
+            
+            # Game bet
+            if self.players[player]["double"] == True:
+                game_bet = 2
+            else:
+                game_bet = 1
+            
             # BJ case
             if self.players[player]["BJ"] == True:
                 if self.dealer["BJ"] == True:
                     print("Draw for {}.".format(player))
                 else:
                     print("{} wins.".format(player))
-                    self.players[player]["money"] = self.players[player]["money"] + 1
+                    self.players[player]["money"] = self.players[player]["money"] + game_bet
                     
-            # Other cases        
+            # Other cases
             else:
                 # more than 21 points
                 if self.players[player]["points"] > 21:
                     print("{} loses.".format(player))
-                    self.players[player]["money"] = self.players[player]["money"] - 1
+                    self.players[player]["money"] = self.players[player]["money"] - game_bet
                 # 21 points or less
                 else:
                     # dealer BJ
                     if self.dealer["BJ"] == True:
                         print("{} loses.".format(player))
-                        self.players[player]["money"] = self.players[player]["money"] - 1
+                        self.players[player]["money"] = self.players[player]["money"] - game_bet
                     # other cases
                     else:
                         if self.dealer["points"] > 21:
                             print("{} wins.".format(player))
-                            self.players[player]["money"] = self.players[player]["money"] + 1
+                            self.players[player]["money"] = self.players[player]["money"] + game_bet
                         elif self.players[player]["points"] > self.dealer["points"]:
                             print("{} wins.".format(player))
-                            self.players[player]["money"] = self.players[player]["money"] + 1
+                            self.players[player]["money"] = self.players[player]["money"] + game_bet
                         elif self.players[player]["points"] < self.dealer["points"]:
                             print("{} loses.".format(player))
-                            self.players[player]["money"] = self.players[player]["money"] - 1
+                            self.players[player]["money"] = self.players[player]["money"] - game_bet
                         else:
                             print("Draw for {}.".format(player))
             
