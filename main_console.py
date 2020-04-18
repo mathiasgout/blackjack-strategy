@@ -5,21 +5,15 @@ class PlayBlackJack:
     
     
     def __init__(self):
-        signs = [" of Club", " of Spade", " of Heart", " of Diamond"]
-        numbers = ["A","K","Q","J","T","9","8","7","6","5","4","3","2"]
-        cards = [number + sign for number in numbers for sign in signs]
-        self.cards = sample(cards, 52)
-        
-        print("-------------------- Setup Game --------------------")
+
         self.setup()
-        
-        print("-------------------- Game Starts --------------------")
         self.game_starts()
-        self.main()
         
         
     def setup(self):
         """ Setup the game and deals the first cards """
+        
+        print("-------------------- Setup Game --------------------")
         
         # Players number
         players_number = input("How many players ? (max 3) : ")
@@ -42,18 +36,12 @@ class PlayBlackJack:
             players_name.append(name)
             players[name] = dict()
             players[name]["name"] = name
-            players[name]["points"] = 0
             players[name]["money"] = 0
-            players[name]["BJ"] = False
-            players[name]["insurance"] = False
-            players[name]["double"] = False
         
         self.players_name = players_name
         self.players = players
         self.dealer = dict()
         self.dealer["name"] = "Dealer"
-        self.dealer["points"] = 0
-        self.dealer["BJ"] = False
             
     
     @staticmethod
@@ -101,18 +89,34 @@ class PlayBlackJack:
     
     def game_starts(self):
         """ The beginning of the game """
+         
+        print("-------------------- Game Starts --------------------")
         
-        print("Players : {} and {}.".format(", ".join(self.players_name[:-1]), self.players_name[-1]))
+        # cards initialization
+        signs = [" of Club", " of Spade", " of Heart", " of Diamond"]
+        numbers = ["A","K","Q","J","T","9","8","7","6","5","4","3","2"]
+        cards = [number + sign for number in numbers for sign in signs]
+        self.cards = sample(cards, 52)
         
-        # First cards dealt
+        # players and dealer initialization
         for player in self.players_name:
+            print("{} money : {}".format(player, self.players[player]["money"]))
             self.players[player]["cards"] = self.cards[:2]
             self.cards = self.cards[2:]
-
+            self.players[player]["points"] = 0
+            self.players[player]["BJ"] = False
+            self.players[player]["insurance"] = False
+            self.players[player]["double"] = False
+        
+        self.dealer["cards"] = []
         self.dealer["cards"] = [self.cards.pop(0)]
         self.hidden_card = self.cards.pop(0)
+        self.dealer["points"] = 0
+        self.dealer["BJ"] = False
         
+        self.main()
             
+        
     def main(self):
         """ Game from the start of first player turn to the end of the dealer turn """
         
@@ -168,7 +172,9 @@ class PlayBlackJack:
             print("Dealer has {} points, end of the game !".format(self.dealer["points"]))
         
         print("-------------------- End of the Game --------------------")
-            
+        self.give_results()
+        self.ask_for_new_game()
+        
     
     def give_results(self):
         """ List the results """
@@ -182,15 +188,50 @@ class PlayBlackJack:
                     print("Draw for {}.".format(player))
                 else:
                     print("{} wins.".format(player))
+                    self.players[player]["money"] = self.players[player]["money"] + 1
                     
             # Other cases        
-        else:
-            pass
-        
-        
-        
-                
+            else:
+                # more than 21 points
+                if self.players[player]["points"] > 21:
+                    print("{} loses.".format(player))
+                    self.players[player]["money"] = self.players[player]["money"] - 1
+                # 21 points or less
+                else:
+                    # dealer BJ
+                    if self.dealer["BJ"] == True:
+                        print("{} loses.".format(player))
+                        self.players[player]["money"] = self.players[player]["money"] - 1
+                    # other cases
+                    else:
+                        if self.dealer["points"] > 21:
+                            print("{} wins.".format(player))
+                            self.players[player]["money"] = self.players[player]["money"] + 1
+                        elif self.players[player]["points"] > self.dealer["points"]:
+                            print("{} wins.".format(player))
+                            self.players[player]["money"] = self.players[player]["money"] + 1
+                        elif self.players[player]["points"] < self.dealer["points"]:
+                            print("{} loses.".format(player))
+                            self.players[player]["money"] = self.players[player]["money"] - 1
+                        else:
+                            print("Draw for {}.".format(player))
             
+
+    def ask_for_new_game(self):
+        """ Ask for a new game """
+        
+        question = input("New game ? (y/n) : ")
+        while question not in ["y","n"]:
+            question = input("New game ? (y/n) : ")       
+        
+        if question == "y":
+            self.game_starts()
+        
+        else:
+            for player in self.players_name:
+                print("{} money : {}".format(player, self.players[player]["money"]))
+                
+        return
         
 
 if __name__ == "__main__":
