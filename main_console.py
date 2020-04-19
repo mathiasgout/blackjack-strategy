@@ -111,7 +111,7 @@ class PlayBlackJack:
     
     
     def game_starts(self):
-        """ The beginning of the game """
+        """ Game initialization """
         
         print("\n")
         print("-------------------- GAME STARTS --------------------\n")
