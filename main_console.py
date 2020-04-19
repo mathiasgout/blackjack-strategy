@@ -154,8 +154,9 @@ class PlayBlackJack:
         # Players turns
         for player in self.players_name:
             
-            self.players[player]["points"] = self.points_calculation(self.players[player])
             print("\n")
+            print("-------------------- {}'s Turn --------------------\n".format(player))
+            self.players[player]["points"] = self.points_calculation(self.players[player])
             self.print_hand(self.dealer)
             print("\n")
             self.print_hand(self.players[player])
@@ -478,16 +479,6 @@ class PlayBlackJack:
         
 
 if __name__ == "__main__":
-    game = PlayBlackJack()
-    # game.players["_1"]["cards"] = ["T","J"]
-    # game.players["_1"]["cards_1"] = []
-    # game.players["_1"]["cards_2"] = []
-    # game.players["_1"]["points_1"] = 0
-    # game.players["_1"]["points_2"] = 0    
-    # game.players["_1"]["money"] = 0
-    # game.players["_2"]["cards"] = ["8","9"]
-    # game.players["_2"]["money"] = 0
-    # game.dealer["cards"] = ["9"]
-    # game.dealer["points"] = 9
+    PlayBlackJack()
     
     
