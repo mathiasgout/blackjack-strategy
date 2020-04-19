@@ -43,7 +43,7 @@ class StrategyMC:
             self.cards.remove(self.player["cards"][0])
             self.cards.remove(self.player["cards"][1])
             self.cards.remove(self.dealer["cards"][0])
-            self.cards = sample(self.cards, 49)
+            self.cards = sample(self.cards, len(self.cards)-3)
             
             # player and dealer initialization
             self.player["points"] = self.points_calculation(self.player)
@@ -238,4 +238,4 @@ class StrategyMC:
             
 
 if __name__ == "__main__":
-    strategy = StrategyMC(dealer_card="A", player_cards=["2","9"], n_iter=10000, insurance=False, max_point=15)
+    strategy = StrategyMC(dealer_card="A", player_cards=["8","9"], n_iter=10000, insurance=True, max_point=17)
