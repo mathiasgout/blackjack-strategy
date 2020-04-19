@@ -247,7 +247,7 @@ class PlayBlackJack:
         if opt == 2:
             question = input("{} do you want to double ? (y/n) : ".format(player["name"] + "-second-split"))
             while question not in ["y","n"]:
-                question = input("Please {}, do you want a card ? (y/n) : ".format(player["name"] + "-second-split"))
+                question = input("Please {}, do you want to double ? (y/n) : ".format(player["name"] + "-second-split"))
             
             if question == "y":
                 player["double_2"] = True
@@ -263,7 +263,7 @@ class PlayBlackJack:
         elif opt == 1:
             question = input("{} do you want to double ? (y/n) : ".format(player["name"] + "-first-split"))
             while question not in ["y","n"]:
-                question = input("Please {}, do you want a card ? (y/n) : ".format(player["name"] + "-first-split"))
+                question = input("Please {}, do you want to double ? (y/n) : ".format(player["name"] + "-first-split"))
             
             if question == "y":
                 player["double_1"] = True
@@ -279,7 +279,7 @@ class PlayBlackJack:
         else:
             question = input("{} do you want to double ? (y/n) : ".format(player["name"]))
             while question not in ["y","n"]:
-                question = input("Please {}, do you want a card ? (y/n) : ".format(player["name"]))
+                question = input("Please {}, do you want to double ? (y/n) : ".format(player["name"]))
             
             if question == "y":
                 player["double"] = True
