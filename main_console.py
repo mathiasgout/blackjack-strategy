@@ -176,6 +176,7 @@ class PlayBlackJack:
             # Blackjack case
             if self.players[player]["points"] == 21:
                 self.players[player]["BJ"] = True
+                print("\n")
                 print("Blackjack for {} !".format(player))
             
             # Other cases
