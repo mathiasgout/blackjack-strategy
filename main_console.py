@@ -379,7 +379,7 @@ class PlayBlackJack:
             # Insurance case
             if self.players[player]["insurance"] == True:
                 if self.dealer["BJ"] == True:
-                    self.players[player]["money"] = self.players[player]["money"] + 1.5
+                    self.players[player]["money"] = self.players[player]["money"] + 1
                 else:
                     self.players[player]["money"] = self.players[player]["money"] - 0.5
             

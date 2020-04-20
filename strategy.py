@@ -97,7 +97,7 @@ class StrategyMC:
             # Insurance case
             if self.insurance is True:
                 if self.dealer["BJ"] is True:
-                    self.player["money"] = self.player["money"] + 1.5
+                    self.player["money"] = self.player["money"] + 1
                 else:
                     self.player["money"] = self.player["money"] - 0.5
                     
@@ -238,4 +238,4 @@ class StrategyMC:
             
 
 if __name__ == "__main__":
-    strategy = StrategyMC(dealer_card="A", player_cards=["8","9"], n_iter=10000, insurance=True, max_point=17)
+    strategy = StrategyMC(dealer_card="A", player_cards=["8","9"], n_iter=10000, insurance=False, max_point=17)
