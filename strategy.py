@@ -3,7 +3,7 @@ from random import sample
 class StrategyMC:
     """ Find the best strategy with a MC method """
     
-    def __init__(self, dealer_card, player_cards, n_iter=10000, insurance=False, split=False, double=False, max_point=18, double_in_split=False):
+    def __init__(self, dealer_card, player_cards, n_iter=10000, insurance=False, split=False, double=False, max_point=18):
         """
         dealer_card = a card
         player_cards = a list of 2 cards
@@ -12,7 +12,6 @@ class StrategyMC:
         split = bool
         double = bool
         max_point = int
-        double_in_split = bool
         """
         self.player = dict()
         self.player["money"] = 0
@@ -24,7 +23,6 @@ class StrategyMC:
         self.split = split
         self.double = double
         self.max_point = max_point
-        self.double_in_split = double_in_split
         
         self.game_starts()
     
@@ -105,7 +103,7 @@ class StrategyMC:
             # Split case
             if self.split is True:
                 # Game bet
-                if self.double_in_split is True:
+                if self.double is True:
                     game_bet = 2
                 else:
                     game_bet = 1
@@ -151,10 +149,11 @@ class StrategyMC:
         else:
             self.results["profit"] = self.player["money"]
             self.results["mean_profit"] = self.player["money"]/self.N
-            if self.double is True:
+            self.results["win_rate"] = (self.results["mean_profit"] + 1)/2
+            if self.double is True and self.split is True:
+                self.results["win_rate"] = (self.results["mean_profit"] + 4)/8
+            elif self.double is True or self.split is True:
                 self.results["win_rate"] = (self.results["mean_profit"] + 2)/4
-            else:
-                self.results["win_rate"] = (self.results["mean_profit"] + 1)/2
             return 
         
     
@@ -187,7 +186,7 @@ class StrategyMC:
         self.player["points_1"] = self.points_calculation(self.player, opt=1)
         self.player["points_2"] = self.points_calculation(self.player, opt=2)
        
-        if self.double_in_split is True:
+        if self.double is True:
             self.double_case(opt=1)
             self.double_case(opt=2)
             
@@ -245,5 +244,5 @@ class StrategyMC:
             
 
 if __name__ == "__main__":
-    strategy = StrategyMC(dealer_card="2", player_cards=["9","2"], n_iter=100000, insurance=False, max_point=11, double=True)
+    strategy = StrategyMC(dealer_card="2", player_cards=["T","T"], n_iter=100000, insurance=False, max_point=11, split=True, double=True)
     print(strategy.results)
