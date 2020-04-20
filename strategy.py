@@ -52,6 +52,7 @@ class StrategyMC:
             self.player["points_2"] = 0
             self.player["cards_1"] = []
             self.player["cards_2"] = []
+            self.results = dict()
                        
             self.hidden_card = self.cards.pop(0)
             self.dealer["points"] = 0
@@ -148,6 +149,12 @@ class StrategyMC:
             self.N = self.N + 1
             
         else:
+            self.results["profit"] = self.player["money"]
+            self.results["mean_profit"] = self.player["money"]/self.N
+            if self.double is True:
+                self.results["win_rate"] = (self.results["mean_profit"] + 2)/4
+            else:
+                self.results["win_rate"] = (self.results["mean_profit"] + 1)/2
             return 
         
     
@@ -238,4 +245,5 @@ class StrategyMC:
             
 
 if __name__ == "__main__":
-    strategy = StrategyMC(dealer_card="A", player_cards=["8","9"], n_iter=10000, insurance=False, max_point=17)
+    strategy = StrategyMC(dealer_card="2", player_cards=["9","2"], n_iter=100000, insurance=False, max_point=11, double=True)
+    print(strategy.results)
