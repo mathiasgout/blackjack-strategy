@@ -78,7 +78,7 @@ class StrategyMC:
                     while self.player["points"] < self.max_point:
                         self.player["cards"].append(self.cards.pop(0))
                         self.player["points"] = self.points_calculation(self.player)            
-            
+                
             # dealer turn
             self.dealer["cards"].append(self.hidden_card)
             self.dealer["points"] = self.points_calculation(self.dealer)
@@ -89,8 +89,8 @@ class StrategyMC:
                 while self.dealer["points"] < 17:
                     self.dealer["cards"].append(self.cards.pop(0))
                     self.dealer["points"] = self.points_calculation(self.dealer)
-            
 
+                    
             """ List the results """
         
             # Insurance case
@@ -244,5 +244,5 @@ class StrategyMC:
             
 
 if __name__ == "__main__":
-    strategy = StrategyMC(dealer_card="2", player_cards=["T","T"], n_iter=100000, insurance=False, max_point=11, split=True, double=True)
+    strategy = StrategyMC(dealer_card="2", player_cards=["T","9"], n_iter=10000, insurance=False, max_point=20)
     print(strategy.results)
