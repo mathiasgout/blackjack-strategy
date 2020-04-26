@@ -261,5 +261,5 @@ class StrategyMC:
             
 
 if __name__ == "__main__":
-    strategy = StrategyMC(dealer_card="A", player_cards=["A","A"], n_iter=10000, double=True)
+    strategy = StrategyMC(dealer_card="A", player_cards=["T","9"], n_iter=100000, num_cards=0)
     print(strategy.results)
