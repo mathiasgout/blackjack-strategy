@@ -3,7 +3,7 @@ from random import sample
 class StrategyMC:
     """ Find the best strategy with a MC method """
     
-    def __init__(self, dealer_card, player_cards, n_iter=10000, insurance=False, split=False, double=False, max_point=18):
+    def __init__(self, dealer_card, player_cards, n_iter=10000, insurance=False, split=False, double=False, max_point=18, num_cards=None):
         """
         dealer_card = a card
         player_cards = a list of 2 cards
@@ -12,6 +12,7 @@ class StrategyMC:
         split = bool
         double = bool
         max_point = int
+        nums_card = int (the number of cards you want to hit) or None if you want to use max_point
         """
         self.player = dict()
         self.player["money"] = 0
@@ -23,6 +24,7 @@ class StrategyMC:
         self.split = split
         self.double = double
         self.max_point = max_point
+        self.num_cards = num_cards
         
         self.game_starts()
     
@@ -75,10 +77,17 @@ class StrategyMC:
                     self.double_case()
                 # no double case
                 else:
-                    while self.player["points"] < self.max_point:
-                        self.player["cards"].append(self.cards.pop(0))
-                        self.player["points"] = self.points_calculation(self.player)            
-                
+                    if self.num_cards is None:
+                        while self.player["points"] < self.max_point:
+                            self.player["cards"].append(self.cards.pop(0))
+                            self.player["points"] = self.points_calculation(self.player)
+                    else:
+                        count = 0
+                        while count < self.num_cards:
+                            self.player["cards"].append(self.cards.pop(0))
+                            self.player["points"] = self.points_calculation(self.player)
+                            count = count + 1
+                            
             # dealer turn
             self.dealer["cards"].append(self.hidden_card)
             self.dealer["points"] = self.points_calculation(self.dealer)
@@ -191,11 +200,19 @@ class StrategyMC:
             self.double_case(opt=2)
             
         else:
-            for i in range(1,3):
-                while self.player["points_{}".format(i)] < self.max_point:
-                    self.player["cards_{}".format(i)].append(self.cards.pop(0))
-                    self.player["points_{}".format(i)] = self.points_calculation(self.player, opt=i)
-       
+            if self.num_cards is None:
+                for i in range(1,3):
+                    while self.player["points_{}".format(i)] < self.max_point:
+                        self.player["cards_{}".format(i)].append(self.cards.pop(0))
+                        self.player["points_{}".format(i)] = self.points_calculation(self.player, opt=i)
+            else:
+                for i in range(1,3):
+                    count = 0
+                    while count < self.num_cards:
+                        self.player["cards_{}".format(i)].append(self.cards.pop(0))
+                        self.player["points_{}".format(i)] = self.points_calculation(self.player, opt=i)
+                        count = count + 1
+                        
                     
     @staticmethod
     def points_calculation(player, opt=0):
@@ -244,5 +261,5 @@ class StrategyMC:
             
 
 if __name__ == "__main__":
-    strategy = StrategyMC(dealer_card="2", player_cards=["T","9"], n_iter=10000, insurance=False, max_point=20)
+    strategy = StrategyMC(dealer_card="A", player_cards=["A","A"], n_iter=10000, double=True)
     print(strategy.results)
