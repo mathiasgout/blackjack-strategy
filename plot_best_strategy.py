@@ -1,7 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib
 import ast
 import seaborn as sns
+import numpy as np
 
 df_normal = pd.read_csv("C:/Users/mathi/Documents/amusement/python/blackjack/best_strategies/df_normal.csv")
 df_normal["best_strategy"] = df_normal.loc[:, ["mean_profit_stand", "mean_profit_hit", "mean_profit_double"]].idxmax(axis=1)
@@ -24,4 +26,4 @@ for i in range(dealer_ace.shape[0]):
     df.loc[dealer_ace.card1.iloc[i], dealer_ace.card2.iloc[i]] = dealer_ace.loc[i, "best_strategy"]
 
 
-df.plot()
+
