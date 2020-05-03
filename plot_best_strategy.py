@@ -63,9 +63,10 @@ for card in ["A","T","9","8","7","6","5","4","3","2"]:
     mask[np.triu_indices_from(mask, 1)] = True
     
     
-    # plot
+    # plots
     fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(11,5))
     
+    # best strat plot
     im = ax1.scatter(x, y, s=350, c=strat_list, cmap=plt.cm.get_cmap('Paired', 3), marker="s")
     ax1.set_xlim(11.5, 2.5)
     ax1.set_ylim(1.5, 10.5)
@@ -85,17 +86,98 @@ for card in ["A","T","9","8","7","6","5","4","3","2"]:
     ax1.set_ylabel("Second Player's Card")
     ax1.set_title("Best Blackjack Strategy", pad=20)
     
+    # profit heatmap
     im2 = sns.heatmap(hm_matrix, linewidth=1, mask=mask, cmap="bwr", annot=True, vmax=1, vmin=-1, cbar_kws={'label': 'Mean Profit, Initial Bet = 1'}, ax=ax2)
     im2.set_title('Mean Profit with Best Strategy', pad=20)
     im2.set_xlabel("First Player's Card")
     im2.set_ylabel("Second Player's Card")
+    im2.set_yticklabels(im2.get_yticklabels(), rotation = 0)
     
     
-    fig.suptitle("Dealer's Card : {}".format(card), fontsize=20, y=0.98, fontweight="bold")
+    fig.suptitle("Best Blackjack Strategy and Profit when Dealer's Card = {}".format(card), fontsize=20, y=0.98, fontweight="bold")
     fig.tight_layout(rect=[0, 0, 1, 0.85])
     
     fig.savefig("best_strategies/BS_dealer_{}.pdf".format(card))
     plt.show()
     
     
+    
+""" SPLIT CASES """
+# Import df_split create with BuildBestStrategy().SplitCases() (from build_best_strategy.py)
+df_split = pd.read_csv("best_strategies/df_split.csv")
 
+# Add columns "best_strategy", "best_profit"
+df_split["best_strategy"] = df_split.loc[:, ["mean_profit_stand", "mean_profit_hit", "mean_profit_double", "mean_profit_split", "mean_profit_split_double"]].idxmax(axis=1)
+df_split["max_profit"] = df_split.loc[:, ["mean_profit_stand", "mean_profit_hit", "mean_profit_double", "mean_profit_split", "mean_profit_split_double"]].max(axis=1)
+df_split["card1"] = df_split.player_cards.apply(get_card, position=1)
+  
+
+# 1st plot : X axis
+x = df_split.card1
+x = x.replace("A", 11)
+x = x.replace("T", 10)
+x = x.to_numpy()
+x = x.astype("int")
+
+# 1st plot : Y axis
+y = df_split.dealer_cards
+y = y.replace("A", 11)
+y = y.replace("T", 10)
+y = y.to_numpy()
+y = y.astype("int")
+
+# 1st plot : best strategy
+strat_list = df_split.best_strategy 
+strat_list = strat_list.replace("mean_profit_stand", 0)
+strat_list = strat_list.replace("mean_profit_hit", 1)
+strat_list = strat_list.replace("mean_profit_double", 2)
+strat_list = strat_list.replace("mean_profit_split", 3)
+strat_list = strat_list.replace("mean_profit_split_double", 4)
+
+
+# 2nd plot : matrix
+hm_matrix = pd.DataFrame(index=["A","T","9","8","7","6","5","4","3","2"], columns=["A","T","9","8","7","6","5","4","3","2"])
+for i in range(len(df_split.max_profit)):
+    hm_matrix.loc[df_split.dealer_cards[i],  df_split.card1[i]] = df_split.max_profit[i]
+
+# 2nd plot : matrix shaping
+hm_matrix = hm_matrix.astype("float")
+hm_matrix = hm_matrix.round(2)
+
+
+# plots
+fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(11,5))
+
+# best strat plot
+im = ax1.scatter(x, y, s=350, c=strat_list, cmap=plt.cm.get_cmap('Paired', 5), marker="s")
+ax1.set_xlim(11.5, 1.5)
+ax1.set_ylim(1.5, 11.5)
+ax1.set(frame_on=False)
+
+def fmt_func(x, loc):
+    return ["Stand", "Hit", "Double", "Split + Hit", "Split + double"][x]
+formatter = plt.FuncFormatter(fmt_func)
+
+fig.colorbar(im, ticks = [0, 1, 2, 3, 4], format=formatter, ax=ax1)
+im.set_clim(-0.5, 4.5)
+ax1.set_xticks([11,10,9,8,7,6,5,4,3,2])
+ax1.set_xticklabels(labels=["A", "T", 9, 8, 7, 6, 5, 4, 3, 2])
+ax1.set_xlabel("Player's Card x2")
+ax1.set_yticks([11,10,9,8,7,6,5,4,3,2])
+ax1.set_yticklabels(labels=["A", "T", 9, 8, 7, 6, 5, 4, 3, 2])
+ax1.set_ylabel("Dealer's Card")
+ax1.set_title("Best Blackjack Strategy with Same Value Cards", pad=20)
+
+# profit heatmap
+im2 = sns.heatmap(hm_matrix, linewidth=1, cmap="bwr", annot=True, vmax=1.5, vmin=-1.5, cbar_kws={'label': 'Mean Profit, Initial Bet = 1'}, ax=ax2)
+im2.set_title('Mean Profit with Best Strategy', pad=20)
+im2.set_xlabel("Player's Card x2")
+im2.set_ylabel("Dealer's Card")
+im2.set_yticklabels(im2.get_yticklabels(), rotation = 0)
+
+
+fig.suptitle("Best Blackjack Strategy and Profit with Same Value Cards", fontsize=20, y=0.98, fontweight="bold")
+
+fig.tight_layout(rect=[0, 0, 1, 0.85])
+fig.savefig("best_strategies/BJ_split_cases.pdf")
+plt.show()
