@@ -1,16 +1,15 @@
 from random import sample
 
+
 class PlayBlackJack:
     """ Blackjack game console """
-    
-    
+
     def __init__(self):
         
         print("\n")
         self.setup()
         self.game_starts()
-        
-        
+
     def setup(self):
         """ Setup the game and deals the first cards """
 
@@ -18,7 +17,7 @@ class PlayBlackJack:
         
         # Players number
         players_number = input("How many players ? (max 3) : ")
-        while players_number not in ["1","2","3"]:
+        while players_number not in ["1", "2", "3"]:
             players_number = input("How many players ? (please give a number between 1 and 3) : ")
         self.players_number = players_number
         
@@ -43,8 +42,7 @@ class PlayBlackJack:
         self.players = players
         self.dealer = dict()
         self.dealer["name"] = "Dealer"
-            
-    
+
     @staticmethod
     def points_calculation(player, opt=0):
         """ 
@@ -64,7 +62,7 @@ class PlayBlackJack:
         # Convert heads to 10
         total_ace = 0
         for i in range(len(hand)):
-            if hand[i] in ["K","Q","J","T"]:
+            if hand[i] in ["K", "Q", "J", "T"]:
                 hand[i] = 10
             elif hand[i] != "A":
                 hand[i] = int(hand[i])
@@ -89,8 +87,7 @@ class PlayBlackJack:
         while hand_tot > 21:
             hand_tot = hand_tot - 10
         return hand_tot
-                
-    
+
     def print_hand(self, player, opt=0):
         """ 
         Print a player's hand and his points
@@ -108,8 +105,7 @@ class PlayBlackJack:
         else:
             print("{}'s hand : {}.".format(player["name"], ", ".join(player["cards"])))
             print("{}'s points : {}".format(player["name"], self.points_calculation(player)))
-    
-    
+
     def game_starts(self):
         """ Game initialization """
         
@@ -118,7 +114,7 @@ class PlayBlackJack:
         
         # cards initialization
         signs = [" of Club", " of Spade", " of Heart", " of Diamond"]
-        values = ["A","K","Q","J","T","9","8","7","6","5","4","3","2"]
+        values = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"]
         cards = [value + sign for value in values for sign in signs]
         self.cards = sample(cards, 52)
         
@@ -146,8 +142,7 @@ class PlayBlackJack:
         self.dealer["BJ"] = False
         
         self.main()
-            
-        
+
     def main(self):
         """ Game from the start of first player turn to the end of the dealer turn """
         
@@ -163,8 +158,9 @@ class PlayBlackJack:
             
             # Insurance
             if self.dealer["cards"][0][0] == "A":
-                want_insurance = input("Dealer's first card is an Ace, do you want an insurance {} ? (y/n) : ".format(player))
-                while want_insurance not in ["y","n"]:
+                want_insurance = input("Dealer's first card is an Ace, do you want an insurance {} ? (y/n) : "
+                                       .format(player))
+                while want_insurance not in ["y", "n"]:
                     want_insurance = input("Please {}, do you want an insurance ? (y/n) : ".format(player))
                 if want_insurance == "y":
                     self.players[player]["insurance"] = True
@@ -189,7 +185,7 @@ class PlayBlackJack:
                                         
                     # Ask for card
                     want_card = input("{} do you want a card ? (y/n) : ".format(player))
-                    while want_card not in ["y","n"]:
+                    while want_card not in ["y", "n"]:
                         want_card = input("Please {}, do you want a card ? (y/n) : ".format(player))
                     
                     if want_card == "n":
@@ -236,8 +232,7 @@ class PlayBlackJack:
         
         self.give_results()
         self.ask_for_new_game()
-        
-        
+
     def ask_for_double(self, player, opt=0):
         """ 
         The double case
@@ -248,7 +243,7 @@ class PlayBlackJack:
         
         if opt == 2:
             question = input("{} do you want to double ? (y/n) : ".format(player["name"] + "-second-split"))
-            while question not in ["y","n"]:
+            while question not in ["y", "n"]:
                 question = input("Please {}, do you want to double ? (y/n) : ".format(player["name"] + "-second-split"))
             
             if question == "y":
@@ -264,7 +259,7 @@ class PlayBlackJack:
         
         elif opt == 1:
             question = input("{} do you want to double ? (y/n) : ".format(player["name"] + "-first-split"))
-            while question not in ["y","n"]:
+            while question not in ["y", "n"]:
                 question = input("Please {}, do you want to double ? (y/n) : ".format(player["name"] + "-first-split"))
             
             if question == "y":
@@ -280,7 +275,7 @@ class PlayBlackJack:
         
         else:
             question = input("{} do you want to double ? (y/n) : ".format(player["name"]))
-            while question not in ["y","n"]:
+            while question not in ["y", "n"]:
                 question = input("Please {}, do you want to double ? (y/n) : ".format(player["name"]))
             
             if question == "y":
@@ -293,8 +288,7 @@ class PlayBlackJack:
                     print("{} lost.".format(player["name"]))
                 return True
             return False    
-    
-    
+
     def ask_for_split(self, player):
         """ The split case """
         
@@ -302,7 +296,7 @@ class PlayBlackJack:
         hand = [card[0] for card in player["cards"]]
 
         for i in range(2):
-            if hand[i] in ["K","Q","J","T"]:
+            if hand[i] in ["K", "Q", "J", "T"]:
                 hand[i] = 10
             elif hand[i] == "A":
                 hand[i] = 11
@@ -316,7 +310,7 @@ class PlayBlackJack:
         # can split
         else:
             question = input("{} do you want to split ? (y/n) : ".format(player["name"]))
-            while question not in ["y","n"]:
+            while question not in ["y", "n"]:
                 question = input("Please {}, do you want to split ? (y/n) : ".format(player["name"]))
             
             # do not want to split
@@ -330,7 +324,7 @@ class PlayBlackJack:
                 player["points_1"] = self.points_calculation(player, opt=1)
                 player["points_2"] = self.points_calculation(player, opt=2)
                 
-                for i,word in enumerate(["first","second"]):
+                for i, word in enumerate(["first", "second"]):
                     print("\n")
                     self.print_hand(self.dealer)
                     print("\n")
@@ -343,8 +337,9 @@ class PlayBlackJack:
                                             
                         # Ask for card
                         want_card = input("{}-{} do you want a card ? (y/n) : ".format(player["name"], word + "-split"))
-                        while want_card not in ["y","n"]:
-                            want_card = input("Please {}-{}, do you want a card ? (y/n) : ".format(player["name"], word + "-split"))
+                        while want_card not in ["y", "n"]:
+                            want_card = input("Please {}-{}, do you want a card ? (y/n) : ".format(player["name"],
+                                                                                                   word + "-split"))
                         
                         if want_card == "n":
                             break
@@ -366,8 +361,7 @@ class PlayBlackJack:
                         self.print_hand(player, opt=i+1)
                             
                 return True
-        
-    
+
     def give_results(self):
         """ List the results """
         
@@ -377,18 +371,18 @@ class PlayBlackJack:
         for player in self.players_name:
             
             # Insurance case
-            if self.players[player]["insurance"] == True:
-                if self.dealer["BJ"] == True:
+            if self.players[player]["insurance"]:
+                if self.dealer["BJ"]:
                     self.players[player]["money"] = self.players[player]["money"] + 1
                 else:
                     self.players[player]["money"] = self.players[player]["money"] - 0.5
             
             # Split case
-            if self.players[player]["split"] == True:
+            if self.players[player]["split"]:
                 
-                for i,word in enumerate(["first","second"]):
+                for i, word in enumerate(["first", "second"]):
                     # Split bet
-                    if self.players[player]["double_{}".format(i+1)] == True:
+                    if self.players[player]["double_{}".format(i+1)]:
                         game_bet = 2
                     else:
                         game_bet = 1
@@ -400,7 +394,7 @@ class PlayBlackJack:
                     # 21 points or less
                     else:
                         # dealer BJ
-                        if self.dealer["BJ"] == True:
+                        if self.dealer["BJ"]:
                             print("{}-{} lost.".format(player, word + "-split"))
                             self.players[player]["money"] = self.players[player]["money"] - game_bet
                         # other cases
@@ -419,14 +413,14 @@ class PlayBlackJack:
                 continue
                     
             # Game bet
-            if self.players[player]["double"] == True:
+            if self.players[player]["double"]:
                 game_bet = 2
             else:
                 game_bet = 1
             
             # BJ case
-            if self.players[player]["BJ"] == True:
-                if self.dealer["BJ"] == True:
+            if self.players[player]["BJ"]:
+                if self.dealer["BJ"]:
                     print("Draw for {}.".format(player))
                 else:
                     print("{} wins.".format(player))
@@ -441,7 +435,7 @@ class PlayBlackJack:
                 # 21 points or less
                 else:
                     # dealer BJ
-                    if self.dealer["BJ"] == True:
+                    if self.dealer["BJ"]:
                         print("{} loses.".format(player))
                         self.players[player]["money"] = self.players[player]["money"] - game_bet
                     # other cases
@@ -457,7 +451,6 @@ class PlayBlackJack:
                             self.players[player]["money"] = self.players[player]["money"] - game_bet
                         else:
                             print("Draw for {}.".format(player))
-            
 
     def ask_for_new_game(self):
         """ Ask for a new game """
@@ -465,7 +458,7 @@ class PlayBlackJack:
         print("\n-------------------- END OF THE GAME --------------------")
         print("\n")
         question = input("New game ? (y/n) : ")
-        while question not in ["y","n"]:
+        while question not in ["y", "n"]:
             question = input("New game ? (y/n) : ")       
         
         if question == "y":
@@ -477,9 +470,6 @@ class PlayBlackJack:
             for player in self.players_name:
                 print("{} final money : {}".format(player, self.players[player]["money"]))
                 
-        
 
 if __name__ == "__main__":
     PlayBlackJack()
-    
-    

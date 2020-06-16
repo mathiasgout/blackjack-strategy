@@ -1,9 +1,11 @@
 from random import sample
 
+
 class StrategyMC:
     """ Find the best strategy with a MC method """
     
-    def __init__(self, dealer_card, player_cards, n_iter=10000, insurance=False, split=False, double=False, max_point=18, num_cards=None):
+    def __init__(self, dealer_card, player_cards, n_iter=10000, insurance=False, split=False,
+                 double=False, max_point=18, num_cards=None):
         """
         dealer_card = a card
         player_cards = a list of 2 cards
@@ -25,7 +27,8 @@ class StrategyMC:
         self.double = double
         self.max_point = max_point
         self.num_cards = num_cards
-        
+        self.results = dict()
+
         self.game_starts()
     
     # the count
@@ -39,7 +42,7 @@ class StrategyMC:
             # cards initialization
             self.player["cards"] = self.player_cards[:]
             self.dealer["cards"] = [self.dealer_card]
-            self.cards = ["A","K","Q","J","T","9","8","7","6","5","4","3","2"]*4
+            self.cards = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"] * 4
             self.cards.remove(self.player["cards"][0])
             self.cards.remove(self.player["cards"][1])
             self.cards.remove(self.dealer["cards"][0])
@@ -52,15 +55,12 @@ class StrategyMC:
             self.player["points_2"] = 0
             self.player["cards_1"] = []
             self.player["cards_2"] = []
-            self.results = dict()
                        
             self.hidden_card = self.cards.pop(0)
             self.dealer["points"] = 0
             self.dealer["BJ"] = False
-            
-            
+
             " Game main "
-            
             # player turn
             # split case
             if self.split is True:
@@ -99,9 +99,7 @@ class StrategyMC:
                     self.dealer["cards"].append(self.cards.pop(0))
                     self.dealer["points"] = self.points_calculation(self.dealer)
 
-                    
             """ List the results """
-        
             # Insurance case
             if self.insurance is True:
                 if self.dealer["BJ"] is True:
@@ -116,7 +114,7 @@ class StrategyMC:
                     game_bet = 2
                 else:
                     game_bet = 1
-                for i in range(1,3):
+                for i in range(1, 3):
                     if self.player["points_{}".format(i)] > 21:
                         self.player["money"] = self.player["money"] - game_bet
                     else:
@@ -136,9 +134,9 @@ class StrategyMC:
                     game_bet = 1
                 
                 # BJ case
-                if self.player["BJ"] is True:
-                     if self.dealer["BJ"] is False:
-                         self.player["money"] = self.player["money"] + game_bet
+                if self.player["BJ"]:
+                    if self.dealer["BJ"] is False:
+                        self.player["money"] = self.player["money"] + game_bet
                 # Other cases
                 else:
                     # more than 21 points
@@ -164,8 +162,7 @@ class StrategyMC:
             elif self.double is True or self.split is True:
                 self.results["win_rate"] = (self.results["mean_profit"] + 2)/4
             return 
-        
-    
+
     def double_case(self, opt=0):
         """ 
         The double case
@@ -185,8 +182,7 @@ class StrategyMC:
         else: 
             self.player["cards"].append(self.cards.pop(0))
             self.player["points"] = self.points_calculation(self.player)
- 
-    
+
     def split_case(self):
         """ The split case """
         
@@ -201,19 +197,18 @@ class StrategyMC:
             
         else:
             if self.num_cards is None:
-                for i in range(1,3):
+                for i in range(1, 3):
                     while self.player["points_{}".format(i)] < self.max_point:
                         self.player["cards_{}".format(i)].append(self.cards.pop(0))
                         self.player["points_{}".format(i)] = self.points_calculation(self.player, opt=i)
             else:
-                for i in range(1,3):
+                for i in range(1, 3):
                     count = 0
                     while count < self.num_cards:
                         self.player["cards_{}".format(i)].append(self.cards.pop(0))
                         self.player["points_{}".format(i)] = self.points_calculation(self.player, opt=i)
                         count = count + 1
-                        
-                    
+
     @staticmethod
     def points_calculation(player, opt=0):
         """ 
@@ -233,7 +228,7 @@ class StrategyMC:
         # Convert heads to 10
         total_ace = 0
         for i in range(len(hand)):
-            if hand[i] in ["K","Q","J","T"]:
+            if hand[i] in ["K", "Q", "J", "T"]:
                 hand[i] = 10
             elif hand[i] != "A":
                 hand[i] = int(hand[i])
@@ -258,8 +253,8 @@ class StrategyMC:
         while hand_tot > 21:
             hand_tot = hand_tot - 10
         return hand_tot
-            
+
 
 if __name__ == "__main__":
-    strategy = StrategyMC(dealer_card="A", player_cards=["T","9"], n_iter=100000, num_cards=0)
+    strategy = StrategyMC(dealer_card="8", player_cards=["T", "9"], n_iter=100000, num_cards=0)
     print(strategy.results)
