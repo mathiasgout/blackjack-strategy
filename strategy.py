@@ -7,6 +7,10 @@ class StrategyMC:
     def __init__(self, dealer_card, player_cards, n_iter=10000, insurance=False, split=False,
                  double=False, max_point=18, num_cards=None):
         """
+        Example :
+        strategy = StrategyMC(dealer_card="8", player_cards=["T", "9"], n_iter=100000, num_cards=0)
+        print(strategy.results)
+
         dealer_card = a card
         player_cards = a list of 2 cards
         n_iter = int
@@ -253,8 +257,3 @@ class StrategyMC:
         while hand_tot > 21:
             hand_tot = hand_tot - 10
         return hand_tot
-
-
-if __name__ == "__main__":
-    strategy = StrategyMC(dealer_card="8", player_cards=["T", "9"], n_iter=100000, num_cards=0)
-    print(strategy.results)
