@@ -103,7 +103,7 @@ for card in ["A", "T", "9", "8", "7", "6", "5", "4", "3", "2"]:
                  fontsize=20, y=0.98, fontweight="bold")
     fig.tight_layout(rect=[0, 0, 1, 0.85])
     
-    fig.savefig("best_strategies/BS_dealer_{}.pdf".format(card))
+    fig.savefig("best_strategies/BS_dealer_{}.png".format(card))
     plt.show()
     
 
@@ -192,5 +192,5 @@ fig.suptitle("Best Blackjack Strategy and Profit with Same Value Cards",
              fontsize=20, y=0.98, fontweight="bold")
 
 fig.tight_layout(rect=[0, 0, 1, 0.85])
-fig.savefig("best_strategies/BJ_split_cases.pdf")
+fig.savefig("best_strategies/BJ_split_cases.png")
 plt.show()
