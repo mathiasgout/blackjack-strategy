@@ -13,10 +13,10 @@ class StrategyMC:
 
         dealer_card = a card
         player_cards = a list of 2 cards
-        n_iter = int
-        insurance = bool
-        split = bool
-        double = bool
+        n_iter = int, MC iterations
+        insurance = bool, player will take insurance 
+        split = bool, player will split
+        double = bool, player will double
         max_point = int
         nums_card = int (the number of cards you want to hit) or None if you want to use max_point
         """
