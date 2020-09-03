@@ -158,7 +158,7 @@ hm_matrix = hm_matrix.round(2)
 fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(11, 5))
 
 # best strat plot
-im = ax1.scatter(x, y, s=350, c=strat_list, cmap=plt.cm.get_cmap('Paired', 5), marker="s")
+im = ax1.scatter(x, y, s=300, c=strat_list, cmap=plt.cm.get_cmap('Paired', 5), marker="s")
 ax1.set_xlim(11.5, 1.5)
 ax1.set_ylim(1.5, 11.5)
 ax1.set(frame_on=False)
