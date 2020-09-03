@@ -1,3 +1,4 @@
+import pandas as pd
 from strategy import StrategyMC
 import pandas as pd
 
@@ -238,3 +239,14 @@ class BuildBestStrategy:
             df_split = pd.concat([df_split, pd.DataFrame(result_dict)], ignore_index=True)
 
         return df, df_split
+
+
+if __name__ == "__main__":
+    # df creation
+    bbs = BuildBestStrategy()
+    df_normal = bbs.normal_cases()
+    df_split = bbs.split_cases()
+    
+    # df backup
+    df_normal.to_csv("best_strategies/df_normal.csv")
+    df_split.to_csv("best_strategies/df_split.csv")
