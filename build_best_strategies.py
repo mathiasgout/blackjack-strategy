@@ -254,4 +254,4 @@ if __name__ == "__main__":
         os.mkdir(DIR_PATH)
 
     df_normal.to_csv(os.path.join(DIR_PATH, "df_normal.csv"))
-    df_normal.to_csv(os.path.join(DIR_PATH, "df_split.csv"))
+    df_split.to_csv(os.path.join(DIR_PATH, "df_split.csv"))

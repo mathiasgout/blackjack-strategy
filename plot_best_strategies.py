@@ -108,7 +108,7 @@ if os.path.isdir(DIR_PATH):
                     fontsize=20, y=0.98, fontweight="bold")
         fig.tight_layout(rect=[0, 0, 1, 0.85])
         
-        fig.savefig("best_strategies/BS_dealer_{}.png".format(card))
+        fig.savefig(os.path.join(DIR_PATH, "BS_dealer_{}.png".format(card)))
         plt.show()
         
 
@@ -124,7 +124,6 @@ if os.path.isdir(DIR_PATH):
                                             "mean_profit_double", "mean_profit_split",
                                             "mean_profit_split_double"]].max(axis=1)
     df_split["card1"] = df_split.player_cards.apply(get_card, position=1)
-    
 
     # 1st plot : X axis
     x = df_split.card1
@@ -197,7 +196,7 @@ if os.path.isdir(DIR_PATH):
                 fontsize=20, y=0.98, fontweight="bold")
 
     fig.tight_layout(rect=[0, 0, 1, 0.85])
-    fig.savefig("best_strategies/BJ_split_cases.png")
+    fig.savefig(os.path.join(DIR_PATH, "BS_split_cases.png"))
     plt.show()
 
 else:
