@@ -3,7 +3,7 @@ from strategy import StrategyMC
 import pandas as pd
 
 
-class BuildBestStrategy:
+class BuildBestStrategies:
     """ Build the best strategy depending of the cases """
     
     CARDS_DEALER = ["A", "T", "9", "8", "7", "6", "5", "4", "3", "2"]
@@ -243,10 +243,13 @@ class BuildBestStrategy:
 
 if __name__ == "__main__":
     # df creation
-    bbs = BuildBestStrategy()
+    bbs = BuildBestStrategies()
     df_normal = bbs.normal_cases()
     df_split = bbs.split_cases()
     
     # df backup
+    if not os.path.isdir(os.path.join(os.getcwd(), "best_strategies")):
+        os.mkdir(os.path.join(os.getcwd(), "best_strategies"))
+
     df_normal.to_csv("best_strategies/df_normal.csv")
     df_split.to_csv("best_strategies/df_split.csv")
