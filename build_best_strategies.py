@@ -1,6 +1,7 @@
 import pandas as pd
 from strategy import StrategyMC
 import pandas as pd
+import os
 
 
 class BuildBestStrategies:
