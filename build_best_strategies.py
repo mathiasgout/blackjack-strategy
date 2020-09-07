@@ -249,8 +249,9 @@ if __name__ == "__main__":
     df_split = bbs.split_cases()
     
     # df backup
-    if not os.path.isdir(os.path.join(os.getcwd(), "best_strategies")):
-        os.mkdir(os.path.join(os.getcwd(), "best_strategies"))
+    DIR_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "best_strategies")
+    if os.path.isdir(DIR_PATH) is False:
+        os.mkdir(DIR_PATH)
 
-    df_normal.to_csv("best_strategies/df_normal.csv")
-    df_split.to_csv("best_strategies/df_split.csv")
+    df_normal.to_csv(os.path.join(DIR_PATH, "df_normal.csv"))
+    df_normal.to_csv(os.path.join(DIR_PATH, "df_split.csv"))

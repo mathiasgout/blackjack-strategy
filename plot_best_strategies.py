@@ -5,12 +5,13 @@ import numpy as np
 import seaborn as sns
 import os
 
-if os.path.isdir(os.path.join(os.getcwd(), "best_strategies")):
+DIR_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "best_strategies")
+if os.path.isdir(DIR_PATH):
     # Check if directory "best_strategies" exists
 
     """ NORMAL CASES """
     # Import df_normal create with BuildBestStrategies().normal_cases() (from build_best_strategy.py)
-    df_normal = pd.read_csv("best_strategies/df_normal.csv")
+    df_normal = pd.read_csv(os.path.join(DIR_PATH, "df_normal.csv"))
 
 
     # ["A", "T"] -> "A" or "T"
@@ -113,7 +114,7 @@ if os.path.isdir(os.path.join(os.getcwd(), "best_strategies")):
 
     """ SPLIT CASES """
     # Import df_split create with BuildBestStrategies().split_cases() (from build_best_strategy.py)
-    df_split = pd.read_csv("best_strategies/df_split.csv")
+    df_split = pd.read_csv(os.path.join(DIR_PATH, "df_split.csv"))
 
     # Add columns "best_strategy", "best_profit"
     df_split["best_strategy"] = df_split.loc[:, ["mean_profit_stand", "mean_profit_hit",
