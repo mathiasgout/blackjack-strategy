@@ -23,7 +23,7 @@ Les résultats de `build_best_strategies.py` et `plot_best_strategies.py` sont d
 
 ## Requirements
 
-Les packages suivants sont nécéssaires (pour utiliser `main_console.py`, seule une installation python 3.x sera requise.) : 
+Les packages suivants sont nécessaires (pour utiliser `main_console.py`, seule une installation python 3.x sera requise.) : 
 
 - python 3.x
 - pandas
